@@ -47,20 +47,61 @@ var library = (function(){
             return odds
 		},
 
-		map : function(list, iterator) {},
+		map : function(list, iterator) {
+            var arr = [];
+            for (var i = 0; i < list.length; i++) {
+				  arr.push(iterator(list[i]));
+            }
+            return arr;
+		},
 
 		pluck : function(list, key) {
 			return this.map(list, function(item){
-				return item[key];
+			return item[key];
 			});
 		},
-		reduce : function(list, iterator, accumulator) {},
+		reduce : function(list, iterator, accumulator) {
+			if (accumulator === undefined) {
+			   accumulator = list[0];
+			}
+			for (var i = 0; i < list.length; i++) {
+				accumulator = iterator(list[i], accumulator);
+			}
+			return accumulator;
+		},
 
-		every : function(list, iterator) {},
+		every : function(list, iterator) {
+			if (iterator === undefined) {
+				iterator = library.identity
+			}
+			for (var i = 0; i < list.length; i++) {
+			if (!iterator(list[i]))
+				return false
+			}
+				return true;
+		},
 
-		some : function(list, iterator) {},
+		some : function(list, iterator) {
+			if (iterator === undefined) {
+				iterator = library.identity
+			}
+			for (var i = 0; i < list.length; i++) {
+			if (iterator(list[i]))
+				return true
+			}
+				return false;
+		},
 
-		contains : function(list, target) {},
+		contains : function(list, target) {
+			if (target === undefined) {
+				target = library.indexOf
+			}
+			for (var i = 0; i < list.length; i++) {
+			if (target(list[i]))
+				return false
+			}
+			return true;
+		},
 
 		// Advanced Collections --- Complete Functions Below
 		shuffle : function(array) {},
@@ -70,9 +111,13 @@ var library = (function(){
 		sortBy : function(list, iterator) {},
 
 		// Objects --- Complete Functions Below
-		extend : function(obj) {},
+		extend : function(obj) {
+			return obj;
+		},
 
-		defaults : function(obj) {},
+		defaults : function(obj) {
+			return obj;
+		},
 
 		// Arrays --- Complete Functions Below
 		first : function(array, n) {
